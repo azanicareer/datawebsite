@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connect Four</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        .container {
+            margin: 20px auto;
+            max-width: 600px;
+        }
+
+        h1 {
+            font-size: 24px;
+        }
+
+        .board {
+            display: grid;
+            grid-template-columns: repeat(7, 50px);
+            grid-gap: 5px;
+            margin-top: 20px;
+        }
+
+        .cell {
+            width: 50px;
+            height: 50px;
+            background-color: #ccc;
+            border: 1px solid #999;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .cell.empty {
+            background-color: white;
+        }
+
+        #reset {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Connect Four</h1>
+        <div class="board">
+            <!-- The game board will be generated here using JavaScript -->
+        </div>
+        <button id="reset">Reset Game</button>
+    </div>
+    <script>
+        const ROWS = 6;
+        const COLUMNS = 7;
+        const PLAYER_1 = 'red';
+        const PLAYER_2 = 'yellow';
+
+        let currentPlayer = PLAYER_1;
+        let board = [];
+
+        const boardContainer = document.querySelector('.board');
+
+        function createBoard() {
+            for (let row = 0; row < ROWS; row++) {
+                board[row] = [];
+                for (let col = 0; col < COLUMNS; col++) {
+                    const cell = document.createElement('div');
+                    cell.classList.add('cell', 'empty');
+                    cell.dataset.row = row;
+                    cell.dataset.col = col;
+                    boardContainer.appendChild(cell);
+                }
+            }
+        }
+
+        boardContainer.addEventListener('click', handleCellClick);
+
+        function handleCellClick(event) {
+            const cell = event.target;
+            const col = cell.dataset.col;
+
+            for (let row = ROWS - 1; row >= 0; row--) {
+                if (!board[row][col]) {
+                    board[row][col] = currentPlayer;
+                    cell.classList.remove('empty');
+                    cell.style.backgroundColor = currentPlayer;
+                    checkWin(row, col);
+                    currentPlayer = currentPlayer === PLAYER_1 ? PLAYER_2 : PLAYER_1;
+                    break;
+                }
+            }
+        }
+
+        const resetButton = document.getElementById('reset');
+        resetButton.addEventListener('click', resetGame);
+
+        function resetGame() {
+            board = [];
+            boardContainer.innerHTML = '';
+            currentPlayer = PLAYER_1;
+            createBoard();
+        }
+
+        // TODO: Implement checkWin function to check for a win
+    </script>
+</body>
+</html>
