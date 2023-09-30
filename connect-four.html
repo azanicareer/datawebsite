@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Connect Four</title>
     <style>
+        /* Add your CSS styles here */
         body {
             font-family: Arial, sans-serif;
             text-align: center;
@@ -70,7 +71,7 @@
         const ROWS = 6;
         const COLUMNS = 7;
         const PLAYER_1 = 'pink';
-        const PLAYER_2 = 'blue';
+        const PLAYER_2 = 'skyblue';
 
         let currentPlayer = PLAYER_1;
         let board = [];
@@ -93,13 +94,16 @@
         boardContainer.addEventListener('click', handleCellClick);
 
         function handleCellClick(event) {
-            const cell = event.target;
-            const col = cell.dataset.col;
+            if (winner) return;
+            
+            const col = event.target.dataset.col;
             const row = getLowestEmptyRow(col);
 
             if (row === null) return; // Clicked on a full column
 
             board[row][col] = currentPlayer;
+
+            const cell = document.querySelector(`[data-row="${row}"][data-col="${col}"]`);
             cell.classList.remove('empty');
             cell.classList.add(currentPlayer);
 
@@ -137,6 +141,7 @@
                 countChipsInDirection(row, col, 1, 1) + countChipsInDirection(row, col, -1, -1) >= 3 ||
                 countChipsInDirection(row, col, 1, -1) + countChipsInDirection(row, col, -1, 1) >= 3
             ) {
+                winner = currentPlayer;
                 return true;
             }
             return false;
@@ -178,10 +183,13 @@
         const resetButton = document.getElementById('reset');
         resetButton.addEventListener('click', resetGame);
 
+        let winner = null;
+
         function resetGame() {
             board = [];
             boardContainer.innerHTML = '';
             currentPlayer = PLAYER_1;
+            winner = null;
             createBoard();
         }
 
