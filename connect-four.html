@@ -39,6 +39,15 @@
             background-color: white;
         }
 
+        /* Updated colors for PLAYER_1 (pink) and PLAYER_2 (sky blue) */
+        .cell.pink {
+            background-color: pink;
+        }
+
+        .cell.skyblue {
+            background-color: skyblue;
+        }
+
         #reset {
             margin-top: 20px;
             padding: 10px 20px;
@@ -60,8 +69,8 @@
     <script>
         const ROWS = 6;
         const COLUMNS = 7;
-        const PLAYER_1 = 'skyblue';
-        const PLAYER_2 = 'pink';
+        const PLAYER_1 = 'pink';
+        const PLAYER_2 = 'skyblue';
 
         let currentPlayer = PLAYER_1;
         let board = [];
@@ -92,7 +101,7 @@
 
             board[row][col] = currentPlayer;
             cell.classList.remove('empty');
-            cell.style.backgroundColor = currentPlayer;
+            cell.classList.add(currentPlayer);
 
             if (checkWin(row, col)) {
                 alert(`Player ${currentPlayer} wins!`);
